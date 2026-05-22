@@ -15,19 +15,19 @@ export default function PhotoCollage() {
         }}
       >
         <div style={{ gridArea: "a" }} className="relative overflow-hidden">
-          <Image src="/collage-1.jpg" alt="Collection" fill className="object-cover object-top hover:scale-105 transition-transform duration-700" />
+          <Image src="/collage-1.jpg" alt="Collection" fill sizes="(max-width: 640px) 33vw, 50vw" className="object-cover object-top hover:scale-105 transition-transform duration-700" />
         </div>
         <div style={{ gridArea: "b" }} className="relative overflow-hidden">
-          <Image src="/collage-2.png" alt="Collection" fill className="object-cover object-top hover:scale-105 transition-transform duration-700" />
+          <Image src="/collage-2.png" alt="Collection" fill sizes="(max-width: 640px) 33vw, 25vw" className="object-cover object-top hover:scale-105 transition-transform duration-700" />
         </div>
         <div style={{ gridArea: "c" }} className="relative overflow-hidden">
-          <Image src="/collage-4.png" alt="Collection" fill className="object-cover object-top hover:scale-105 transition-transform duration-700" />
+          <Image src="/collage-4.png" alt="Collection" fill sizes="(max-width: 640px) 33vw, 25vw" className="object-cover object-top hover:scale-105 transition-transform duration-700" />
         </div>
         <div style={{ gridArea: "d" }} className="relative overflow-hidden">
-          <Image src="/collage-3.png" alt="Collection" fill className="object-cover hover:scale-105 transition-transform duration-700" style={{ objectPosition: "50% 25%" }} />
+          <Image src="/collage-3.png" alt="Collection" fill sizes="(max-width: 640px) 33vw, 50vw" className="object-cover hover:scale-105 transition-transform duration-700" style={{ objectPosition: "50% 25%" }} />
         </div>
         <div style={{ gridArea: "e" }} className="relative overflow-hidden">
-          <Image src="/collage-5.png" alt="Collection" fill className="object-cover object-top hover:scale-105 transition-transform duration-700" />
+          <Image src="/collage-5.png" alt="Collection" fill sizes="(max-width: 640px) 33vw, 25vw" className="object-cover object-top hover:scale-105 transition-transform duration-700" />
         </div>
       </div>
 

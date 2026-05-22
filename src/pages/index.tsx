@@ -13,6 +13,7 @@ export default function Home() {
       <DiscoverSection />
       <div className="mt-12 md:mt-16" />
       <AboutSection />
+      <div className="mt-16 md:mt-24" />
     </>
   );
 }

@@ -7,6 +7,7 @@ export default function HeroSection() {
         src="/hero.jpg"
         alt="A New Era of Style"
         fill
+        sizes="100vw"
         className="object-cover object-top"
         priority
       />

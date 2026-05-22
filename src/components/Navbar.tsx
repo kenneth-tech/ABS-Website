@@ -28,10 +28,16 @@ const aboutDropdown = [
   "Contact Us",
 ];
 
+const featuredPhotos = [
+  { src: "/fall-designs.jpg", label: "Fall Designs", href: "/gallery/fall-designs" },
+  { src: "/discover-2.jpg", label: "Spring Designs", href: "/gallery/spring-designs" },
+  { src: "/summer.png", label: "Summer", href: "/gallery/summer" },
+];
+
 const navItems = [
-  { label: "Gallery", href: "/gallery", dropdown: galleryDropdown },
-  { label: "Featured", href: "/featured", dropdown: featuredDropdown },
-  { label: "About", href: "/about", dropdown: aboutDropdown },
+  { label: "Gallery", href: "/gallery", dropdown: galleryDropdown, photos: featuredPhotos },
+  { label: "Featured", href: "/featured", dropdown: featuredDropdown, photos: featuredPhotos },
+  { label: "About", href: "/about", dropdown: aboutDropdown, photos: null },
 ];
 
 export default function Navbar() {
@@ -51,9 +57,10 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="ABS by Allen Schwartz"
-            width={110}
-            height={55}
+            width={175}
+            height={88}
             className="object-contain"
+            style={{ width: "175px", height: "88px" }}
             priority
           />
         </Link>
@@ -189,6 +196,32 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
+
+            {/* Featured photos */}
+            {active.photos && (
+              <div className="ml-auto flex gap-5">
+                {active.photos.map(({ src, label, href }) => (
+                  <div key={label} className="flex flex-col gap-2.5">
+                    <Link href={href} className="relative block w-44 h-60 overflow-hidden group">
+                      <Image
+                        src={src}
+                        alt={label}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="176px"
+                      />
+                    </Link>
+                    <Link
+                      href={href}
+                      className="font-sans text-[11px] font-light tracking-[0.18em] uppercase text-black hover:opacity-50 transition-opacity flex items-center gap-1.5"
+                    >
+                      {label}
+                      <span className="text-[13px] leading-none">&rsaquo;</span>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

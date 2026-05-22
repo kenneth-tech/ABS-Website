@@ -4,12 +4,16 @@ export default function AboutSection() {
   return (
     <section className="w-full flex flex-col md:flex-row items-stretch" style={{ backgroundColor: "#a8532c" }}>
       {/* Image */}
-      <div className="relative w-full md:w-[45%] md:shrink-0" style={{ height: "clamp(220px, 50vw, 680px)" }}>
+      <div className="relative w-full md:w-[45%] md:shrink-0 overflow-hidden" style={{ height: "clamp(220px, 50vw, 680px)" }}>
         <Image
           src="/about-hero2.png"
           alt="ABS by Allen Schwartz Collection"
           fill
+          sizes="(max-width: 768px) 100vw, 45vw"
           className="object-cover object-top"
+          style={{ transform: "scale(1)", transition: "transform 0.6s cubic-bezier(0.22,1,0.36,1)" }}
+          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.08)")}
+          onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
         />
       </div>
 

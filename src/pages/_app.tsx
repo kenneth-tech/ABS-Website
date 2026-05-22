@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { Raleway, Cinzel, Cormorant_Garamond, Great_Vibes } from "next/font/google";
 import Layout from "@/components/Layout";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <div
       className={`${raleway.variable} ${cinzel.variable} ${cormorant.variable} ${greatVibes.variable} font-sans`}
     >
+      <LoadingScreen />
       <Layout>
         <Component {...pageProps} />
       </Layout>
