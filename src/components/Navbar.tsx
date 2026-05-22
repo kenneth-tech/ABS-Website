@@ -43,7 +43,20 @@ const navItems = [
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuClosing, setMenuClosing] = useState(false);
+  const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<string | null>(null);
   const active = navItems.find((n) => n.label === activeMenu) ?? null;
+
+  const openMobileMenu = () => setMenuOpen(true);
+
+  const closeMobileMenu = () => {
+    setMenuClosing(true);
+    setTimeout(() => {
+      setMenuOpen(false);
+      setMenuClosing(false);
+      setActiveMobileSubmenu(null);
+    }, 320);
+  };
 
   return (
     <nav
@@ -119,49 +132,151 @@ export default function Navbar() {
             </svg>
           </button>
           <button
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Open menu"
+            onClick={openMobileMenu}
             className="text-black hover:opacity-50 transition-opacity"
           >
-            {menuOpen ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
           </button>
         </div>
       </div>
 
-      {/* Mobile menu drawer */}
+      {/* ── Mobile full-screen overlay ── */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-6 flex flex-col gap-6">
-          {navItems.map(({ label, href, dropdown }) => (
-            <div key={label}>
-              <Link
-                href={href}
-                className="font-sans text-[13px] font-light tracking-[0.28em] uppercase text-black"
-                onClick={() => setMenuOpen(false)}
-              >
-                {label}
-              </Link>
-              <div className="mt-3 pl-3 flex flex-col gap-3">
-                {dropdown.map((item) => (
-                  <Link
-                    key={item}
-                    href={`/${label.toLowerCase()}/${item.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                    className="font-sans text-[11px] font-light tracking-[0.18em] uppercase text-gray-400 hover:text-black transition-colors"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item}
-                  </Link>
-                ))}
-              </div>
+        <div
+          className="md:hidden fixed inset-0 z-[60] bg-white flex flex-col"
+          style={{
+            animation: menuClosing
+              ? "mobileMenuOut 0.32s cubic-bezier(0.4,0,1,1) forwards"
+              : "mobileMenuIn 0.35s cubic-bezier(0,0,0.2,1) forwards",
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 h-20 border-b border-gray-100 flex-shrink-0">
+            <Link href="/" onClick={closeMobileMenu}>
+              <Image
+                src="/logo.png"
+                alt="ABS by Allen Schwartz"
+                width={130}
+                height={65}
+                className="object-contain"
+                style={{ width: "130px", height: "65px" }}
+              />
+            </Link>
+            <button
+              aria-label="Close menu"
+              onClick={closeMobileMenu}
+              className="text-black hover:opacity-50 transition-opacity"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Sliding panels */}
+          <div className="relative flex-1 overflow-hidden">
+            {/* First level */}
+            <div
+              className="absolute inset-0 overflow-y-auto transition-transform duration-300 ease-in-out"
+              style={{ transform: activeMobileSubmenu ? "translateX(-100%)" : "translateX(0)" }}
+            >
+              {navItems.map(({ label, href, dropdown }) => (
+                <div key={label} className="border-b border-gray-100">
+                  {dropdown.length > 0 ? (
+                    <button
+                      className="flex items-center justify-between w-full px-6 py-5 text-left"
+                      onClick={() => setActiveMobileSubmenu(label)}
+                    >
+                      <span className="font-sans text-[12px] font-light tracking-[0.25em] uppercase text-black">
+                        {label}
+                      </span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="flex items-center justify-between w-full px-6 py-5"
+                      onClick={closeMobileMenu}
+                    >
+                      <span className="font-sans text-[12px] font-light tracking-[0.25em] uppercase text-black">
+                        {label}
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
+
+            {/* Second level */}
+            <div
+              className="absolute inset-0 bg-white overflow-y-auto transition-transform duration-300 ease-in-out"
+              style={{ transform: activeMobileSubmenu ? "translateX(0)" : "translateX(100%)" }}
+            >
+              {/* Back button */}
+              <button
+                className="flex items-center gap-3 w-full px-6 py-5 border-b border-gray-100"
+                onClick={() => setActiveMobileSubmenu(null)}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+                </svg>
+                <span className="font-sans text-[12px] font-light tracking-[0.25em] uppercase text-black">
+                  {activeMobileSubmenu}
+                </span>
+              </button>
+
+              {/* Submenu items */}
+              {navItems
+                .find((n) => n.label === activeMobileSubmenu)
+                ?.dropdown.map((item) => (
+                  <div key={item} className="border-b border-gray-100">
+                    <Link
+                      href={`/${activeMobileSubmenu?.toLowerCase()}/${item.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                      className="flex items-center justify-between px-6 py-4"
+                      onClick={closeMobileMenu}
+                    >
+                      <span className="font-sans text-[12px] font-light tracking-[0.2em] uppercase text-gray-600">
+                        {item}
+                      </span>
+                    </Link>
+                  </div>
+                ))}
+
+              {/* Photos strip — only for Gallery and Featured */}
+              {(activeMobileSubmenu === "Gallery" || activeMobileSubmenu === "Featured") && (
+                <div className="px-6 pt-8 pb-6">
+                  <div className="grid grid-cols-3 gap-3">
+                    {featuredPhotos.map(({ src, label, href }) => (
+                      <div key={label}>
+                        <Link href={href} onClick={closeMobileMenu} className="block relative overflow-hidden group" style={{ aspectRatio: "3/4" }}>
+                          <Image
+                            src={src}
+                            alt={label}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            sizes="33vw"
+                          />
+                        </Link>
+                        <Link
+                          href={href}
+                          onClick={closeMobileMenu}
+                          className="mt-2 flex items-center gap-1 font-sans text-[9px] font-light tracking-[0.15em] uppercase text-black"
+                        >
+                          {label}
+                          <span className="text-[12px] leading-none">&rsaquo;</span>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
