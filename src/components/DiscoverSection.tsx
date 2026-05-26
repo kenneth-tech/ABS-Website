@@ -25,8 +25,8 @@ export default function DiscoverSection() {
           className="font-semibold md:font-light text-white uppercase leading-[0.88] tracking-wide italic hero-mobile-shadow"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          <div className="md:hidden" style={{ fontSize: "clamp(24px, 5.5vw, 130px)" }}>THE NEW ERA OF ABS</div>
-          <div className="hidden md:block" style={{ fontSize: "clamp(40px, 8vw, 130px)" }}>THE NEW ERA OF ABS</div>
+          <div className="md:hidden" style={{ fontSize: "clamp(24px, 5.5vw, 130px)" }}>SHOP THE NEW SEASON</div>
+          <div className="hidden md:block" style={{ fontSize: "clamp(40px, 8vw, 130px)" }}>SHOP THE NEW SEASON</div>
         </div>
       </div>
     </section>
